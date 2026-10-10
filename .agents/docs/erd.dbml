@@ -1,0 +1,100 @@
+Table users {
+    id text
+
+    name text
+    email text
+    password text
+    profile_picture_url text [note: 'nullable']
+    is_verified boolean
+    verified_at timestamptz [note: 'nullable']
+
+    created_at timestamptz
+    updated_at timestamptz
+    deleted_at timestamptz [note: 'nullable']
+}
+
+Table user_has_habits {
+    id text
+
+    user_id text
+    habit_id text
+
+    created_at timestamptz
+    updated_at timestamptz
+    deleted_at timestamptz [note: 'nullable']
+}
+
+Table habits {
+    id text
+
+    streak_count int
+    type text [note: 'enum: system/custom']
+    exp_points int [note: 'nullable']
+
+    created_at timestamptz
+    updated_at timestamptz
+    deleted_at timestamptz [note: 'nullable']
+}
+
+Table user_does_habits {
+    id text
+
+    user_has_habit_id text
+    date date
+
+    created_at timestamptz
+    updated_at timestamptz
+    deleted_at timestamptz [note: 'nullable']
+}
+
+Table habit_has_categories {
+    id text
+
+    habit_id text
+    category_id text
+
+    created_at timestamptz
+    updated_at timestamptz
+    deleted_at timestamptz [note: 'nullable']
+}
+
+Table habit_catories {
+    id text
+
+    name text
+
+    created_at timestamptz
+    updated_at timestamptz
+    deleted_at timestamptz [note: 'nullable']
+}
+
+Table user_has_achievements {
+    id text
+
+    user_id text
+    achievement_id text
+
+    created_at timestamptz
+    updated_at timestamptz
+    deleted_at timestamptz [note: 'nullable']
+}
+
+Table achievements {
+    id text
+
+    created_at timestamptz
+    updated_at timestamptz
+    deleted_at timestamptz [note: 'nullable']
+}
+
+// Relations
+Ref: user_has_habits.user_id > users.id
+Ref: user_has_habits.habit_id > habits.id
+
+Ref: user_does_habits.user_has_habit_id > user_has_habits.id
+
+Ref: habit_has_categories.habit_id > habits.id
+Ref: habit_has_categories.category_id > habit_catories.id
+
+Ref: user_has_achievements.user_id > users.id
+Ref: user_has_achievements.achievement_id > achievements.id
